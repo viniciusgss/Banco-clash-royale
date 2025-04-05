@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warforged Tavern</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/clan-interface.css">
+</head>
+<body class="bg-dark text-light">
+    <!-- Header Moderno -->
+    <header class="header text-center py-5">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Warforged Tavern</h1>
+            <p class="lead mt-3">Bem-vindo à taverna! Acompanhe as estatísticas do seu clã e jogadores.</p>
+        </div>
+    </header>
+
+    <main class="container my-4">
+        <!-- Seção de entrada para buscar dados -->
+        <section class="input-section mb-5">
+            <h2 class="text-center">Busque informações</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group clash-input-group shadow">
+                        <span class="input-group-text clash-tag-icon bg-secondary text-light">#</span>
+                        <input type="text" id="clanTag" class="form-control clash-input" placeholder="Digite o Clan Tag (ex: ABC123)">
+                        <button class="btn btn-primary clash-btn" onclick="fetchClanData()">
+                            <i class="fas fa-search"></i> Buscar Clã
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Botões de controle -->
+        <section class="controls-section row text-center g-3 mb-5">
+            <div class="col-md-4">
+                <button class="btn btn-outline-light w-100" onclick="getClanInfo()">
+                    <i class="fas fa-users"></i> Informações do Clã
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-light w-100" onclick="getClanMembers()">
+                    <i class="fas fa-user-friends"></i> Membros
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-light w-100" onclick="getClanWarLog()">
+                    <i class="fas fa-shield-alt"></i> Histórico de Guerras
+                </button>
+            </div>
+        </section>
+
+        <!-- Categorias -->
+        <section class="categories-section my-5">
+            <h2 class="text-center">Categorias</h2>
+            <div class="row g-4 mt-4">
+                <div class="col-md-4">
+                    <div class="card category-card shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-crown fa-3x text-warning mb-3"></i>
+                            <h5 class="card-title">Melhores Jogadores</h5>
+                            <p class="card-text">Veja os jogadores mais bem classificados do clã.</p>
+                            <button class="btn btn-outline-warning">Explorar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card category-card shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-swords fa-3x text-danger mb-3"></i> <!-- Ícone para vitórias em guerras -->
+                            <h5 class="card-title">Vitórias em Guerras</h5>
+                            <p class="card-text">Acompanhe as vitórias do clã nas batalhas épicas.</p>
+                            <button class="btn btn-outline-danger">Ver Vitórias</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card category-card shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-friends fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">Membros do Clã</h5>
+                            <p class="card-text">Conheça os membros e suas contribuições.</p>
+                            <button class="btn btn-outline-success">Ver Membros</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curiosidades do Clã -->
+        <section class="fun-facts-section my-5">
+            <h2 class="text-center">Curiosidades do Clã</h2>
+            <div class="row g-4 mt-4">
+                <div class="col-md-3">
+                    <div class="fun-fact text-center">
+                        <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                        <h5 class="fact-title">Troféus Totais</h5>
+                        <p class="fact-value">12,345</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="fun-fact text-center">
+                        <i class="fas fa-swords fa-3x text-danger mb-3"></i>
+                        <h5 class="fact-title">Vitórias em Guerras</h5>
+                        <p class="fact-value">567</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="fun-fact text-center">
+                        <i class="fas fa-users fa-3x text-success mb-3"></i>
+                        <h5 class="fact-title">Membros Ativos</h5>
+                        <p class="fact-value">25</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="fun-fact text-center">
+                        <i class="fas fa-gem fa-3x text-primary mb-3"></i>
+                        <h5 class="fact-title">Doações de Cartas</h5>
+                        <p class="fact-value">8,910</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resultados dinâmicos -->
+        <section id="results" class="results-section mt-5 p-4 bg-secondary rounded shadow">
+            <h2 class="text-center">Resultados</h2>
+            <div id="clanResults" class="text-center">
+                <!-- Os dados do clã ou jogador serão inseridos dinamicamente aqui -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Warforged Tavern. Todos os direitos reservados.</p>
+    </footer>
+    <script src="assets/js/animacao.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/charts.js"></script>
+</body>
+</html>
