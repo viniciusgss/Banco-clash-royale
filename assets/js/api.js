@@ -148,5 +148,29 @@ function searchPlayer() {
     fetchPlayerData(playerTag);
 }
 
+// Função para executar consultas
+function executeQueries() {
+    const cardX = document.getElementById('cardX').value;
+    const timestamps = document.getElementById('timestamps').value;
+    const percentage = parseFloat(document.getElementById('percentage').value);
+
+    // Exemplo de consulta 1: Calcular porcentagem de vitórias e derrotas com a carta X
+    const winLossPercentage = calculateWinLossPercentage(cardX, timestamps);
+    const resultsContainer = document.getElementById('resultsContainer');
+    resultsContainer.innerHTML = `
+        <p>Porcentagem de Vitórias com a carta ${cardX}: ${winLossPercentage.wins}%</p>
+        <p>Porcentagem de Derrotas com a carta ${cardX}: ${winLossPercentage.losses}%</p>
+    `;
+
+    // Outras consultas podem ser chamadas aqui
+}
+
+function calculateWinLossPercentage(card, timestamps) {
+    // Simulação de dados e lógica para calcular porcentagem
+    const wins = 60; // Exemplo: 60% de vitórias
+    const losses = 40; // Exemplo: 40% de derrotas
+    return { wins, losses };
+}
+
 // Chama a função ao carregar a página
 document.addEventListener('DOMContentLoaded', loadCards);

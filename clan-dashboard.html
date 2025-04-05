@@ -3,146 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warforged Tavern</title>
+    <title>Royale Data</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Supercell-Magic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/clan-interface.css">
 </head>
-<body class="bg-dark text-light">
-    <!-- Header Moderno -->
-    <header class="header text-center py-5">
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
         <div class="container">
-            <h1 class="display-4 fw-bold">Warforged Tavern</h1>
-            <p class="lead mt-3">Bem-vindo à taverna! Acompanhe as estatísticas do seu clã e jogadores.</p>
+            <h1 class="navbar-brand">Royale Data</h1>
+            <div class="nav-links">
+                <a href="#query-section" class="nav-link">Consultas</a>
+                <a href="#results" class="nav-link">Resultados</a>
+                <a href="#about" class="nav-link">Sobre</a>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="container my-4">
-        <!-- Seção de entrada para buscar dados -->
-        <section class="input-section mb-5">
-            <h2 class="text-center">Busque informações</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="input-group clash-input-group shadow">
-                        <span class="input-group-text clash-tag-icon bg-secondary text-light">#</span>
-                        <input type="text" id="clanTag" class="form-control clash-input" placeholder="Digite o Clan Tag (ex: ABC123)">
-                        <button class="btn btn-primary clash-btn" onclick="fetchClanData()">
-                            <i class="fas fa-search"></i> Buscar Clã
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container text-center">
+            <h1 class="hero-title animate__animated animate__zoomIn">Royale Data</h1>
+            <p class="hero-subtitle animate__animated animate__fadeInUp">Estratégias baseadas em dados</p>
+            <button class="btn btn-hero animate__animated animate__pulse" onclick="scrollToSection('query-section')">Explorar Agora</button>
+        </div>
+    </section>
 
-        <!-- Botões de controle -->
-        <section class="controls-section row text-center g-3 mb-5">
-            <div class="col-md-4">
-                <button class="btn btn-outline-light w-100" onclick="getClanInfo()">
-                    <i class="fas fa-users"></i> Informações do Clã
-                </button>
-            </div>
-            <div class="col-md-4">
-                <button class="btn btn-outline-light w-100" onclick="getClanMembers()">
-                    <i class="fas fa-user-friends"></i> Membros
-                </button>
-            </div>
-            <div class="col-md-4">
-                <button class="btn btn-outline-light w-100" onclick="getClanWarLog()">
-                    <i class="fas fa-shield-alt"></i> Histórico de Guerras
-                </button>
-            </div>
-        </section>
-
-        <!-- Categorias -->
-        <section class="categories-section my-5">
-            <h2 class="text-center">Categorias</h2>
-            <div class="row g-4 mt-4">
-                <div class="col-md-4">
-                    <div class="card category-card shadow">
-                        <div class="card-body text-center">
-                            <i class="fas fa-crown fa-3x text-warning mb-3"></i>
-                            <h5 class="card-title">Melhores Jogadores</h5>
-                            <p class="card-text">Veja os jogadores mais bem classificados do clã.</p>
-                            <button class="btn btn-outline-warning">Explorar</button>
+    <!-- Query Section -->
+    <section id="query-section" class="query-section">
+        <div class="container">
+            <h2 class="section-title">Consultas Analíticas</h2>
+            <div class="row g-4">
+                <!-- Consulta 1 -->
+                <div class="col-md-6">
+                    <div class="query-card animate__animated animate__fadeInLeft">
+                        <div class="card-header">
+                            <img src="assets/img/cards/golem.png" alt="Golem" class="card-icon">
+                            <h3>Taxa de Vitória/Derrota</h3>
                         </div>
+                        <input type="text" class="form-control" id="card1" placeholder="Carta (ex: Golem)">
+                        <input type="date" class="form-control mt-2" id="startDate1">
+                        <input type="date" class="form-control mt-2" id="endDate1">
+                        <button class="btn btn-query mt-3" onclick="runQuery(1)">Executar</button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card category-card shadow">
-                        <div class="card-body text-center">
-                            <i class="fas fa-swords fa-3x text-danger mb-3"></i> <!-- Ícone para vitórias em guerras -->
-                            <h5 class="card-title">Vitórias em Guerras</h5>
-                            <p class="card-text">Acompanhe as vitórias do clã nas batalhas épicas.</p>
-                            <button class="btn btn-outline-danger">Ver Vitórias</button>
+                <!-- Consulta 2 -->
+                <div class="col-md-6">
+                    <div class="query-card animate__animated animate__fadeInRight">
+                        <div class="card-header">
+                            <img src="assets/img/cards/witch.png" alt="Witch" class="card-icon">
+                            <h3>Decks Vitoriosos</h3>
                         </div>
+                        <input type="number" class="form-control" id="winPercent2" placeholder="% de Vitórias (ex: 60)">
+                        <input type="date" class="form-control mt-2" id="startDate2">
+                        <input type="date" class="form-control mt-2" id="endDate2">
+                        <button class="btn btn-query mt-3" onclick="runQuery(2)">Executar</button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card category-card shadow">
-                        <div class="card-body text-center">
-                            <i class="fas fa-user-friends fa-3x text-success mb-3"></i>
-                            <h5 class="card-title">Membros do Clã</h5>
-                            <p class="card-text">Conheça os membros e suas contribuições.</p>
-                            <button class="btn btn-outline-success">Ver Membros</button>
+                <!-- Consulta 3 -->
+                <div class="col-md-6">
+                    <div class="query-card animate__animated animate__fadeInLeft">
+                        <div class="card-header">
+                            <img src="assets/img/cards/hog_rider.png" alt="Hog Rider" class="card-icon">
+                            <h3>Derrotas por Combo</h3>
                         </div>
+                        <input type="text" class="form-control" id="combo3" placeholder="Combo (ex: Golem, Witch)">
+                        <input type="date" class="form-control mt-2" id="startDate3">
+                        <input type="date" class="form-control mt-2" id="endDate3">
+                        <button class="btn btn-query mt-3" onclick="runQuery(3)">Executar</button>
+                    </div>
+                </div>
+                <!-- Consulta 4 -->
+                <div class="col-md-6">
+                    <div class="query-card animate__animated animate__fadeInRight">
+                        <div class="card-header">
+                            <img src="assets/img/cards/fireball.png" alt="Fireball" class="card-icon">
+                            <h3>Vitórias com Desvantagem</h3>
+                        </div>
+                        <input type="text" class="form-control" id="card4" placeholder="Carta (ex: Fireball)">
+                        <input type="number" class="form-control mt-2" id="trophyDiff4" placeholder="% Diferença de Troféus">
+                        <button class="btn btn-query mt-3" onclick="runQuery(4)">Executar</button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Curiosidades do Clã -->
-        <section class="fun-facts-section my-5">
-            <h2 class="text-center">Curiosidades do Clã</h2>
-            <div class="row g-4 mt-4">
-                <div class="col-md-3">
-                    <div class="fun-fact text-center">
-                        <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
-                        <h5 class="fact-title">Troféus Totais</h5>
-                        <p class="fact-value">12,345</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="fun-fact text-center">
-                        <i class="fas fa-swords fa-3x text-danger mb-3"></i>
-                        <h5 class="fact-title">Vitórias em Guerras</h5>
-                        <p class="fact-value">567</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="fun-fact text-center">
-                        <i class="fas fa-users fa-3x text-success mb-3"></i>
-                        <h5 class="fact-title">Membros Ativos</h5>
-                        <p class="fact-value">25</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="fun-fact text-center">
-                        <i class="fas fa-gem fa-3x text-primary mb-3"></i>
-                        <h5 class="fact-title">Doações de Cartas</h5>
-                        <p class="fact-value">8,910</p>
-                    </div>
-                </div>
+    <!-- Cards Section -->
+    <section id="cards" class="cards-section">
+        <div class="container">
+            <h2 class="section-title">Cartas</h2>
+            <div id="cards-container" class="row g-4">
+                <!-- As cartas serão carregadas aqui dinamicamente -->
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Resultados dinâmicos -->
-        <section id="results" class="results-section mt-5 p-4 bg-secondary rounded shadow">
-            <h2 class="text-center">Resultados</h2>
-            <div id="clanResults" class="text-center">
-                <!-- Os dados do clã ou jogador serão inseridos dinamicamente aqui -->
+    <!-- Pesquisa de Cartas -->
+    <section id="search-cards" class="cards-section">
+        <div class="container">
+            <h2 class="section-title">Pesquisar Cartas</h2>
+            <div class="input-group mb-3">
+                <input type="text" id="searchCardInput" class="form-control" placeholder="Digite o nome da carta (ex: Fireball)">
+                <button class="btn btn-primary" onclick="searchCard()">Pesquisar</button>
             </div>
-        </section>
-    </main>
+            <div id="search-results" class="row g-4">
+                <!-- Resultados da pesquisa serão exibidos aqui -->
+            </div>
+        </div>
+    </section>
 
-    <footer>
-        <p>&copy; 2025 Warforged Tavern. Todos os direitos reservados.</p>
+    <!-- Montagem de Deck -->
+    <section id="deck-builder" class="cards-section">
+        <div class="container">
+            <h2 class="section-title">Monte seu Deck</h2>
+            <div id="deck-container" class="row g-4">
+                <!-- Cartas selecionadas para o deck serão exibidas aqui -->
+            </div>
+            <button class="btn btn-success mt-3" onclick="finalizeDeck()">Finalizar Deck</button>
+        </div>
+    </section>
+
+    <!-- Informações de Jogadores e Batalhas -->
+    <section id="player-battle-info" class="cards-section">
+        <div class="container">
+            <h2 class="section-title">Informações de Jogadores e Batalhas</h2>
+            <div id="battle-info-container">
+                <!-- Informações detalhadas de jogadores e batalhas serão exibidas aqui -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="results-section">
+        <div class="container">
+            <h2 class="section-title">Resultados</h2>
+            <div id="results-container" class="results-container">
+                <p class="no-results">Execute uma consulta para ver os resultados!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">Sobre o Projeto</h2>
+            <div class="about-content">
+                <p><strong>Objetivo:</strong> Analisar dados de batalhas do Clash Royale em MongoDB para balanceamento do jogo.</p>
+                <p><strong>Dados:</strong> Jogadores (nickname, troféus) e batalhas (decks, vencedor, torres).</p>
+                <p><strong>Fonte:</strong> API do Clash Royale ou Kaggle.</p>
+                <p><strong>Apresentação:</strong> 14/04/2025 e 15/04/2025.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Royale Data | MongoDB Project - 2025.1</p>
+        </div>
     </footer>
-    <script src="assets/js/animacao.js"></script>
-    <script src="assets/js/api.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="assets/js/charts.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
