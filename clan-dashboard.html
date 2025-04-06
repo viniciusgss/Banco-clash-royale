@@ -38,53 +38,46 @@
             <div class="row g-4">
                 <!-- Consulta 1 -->
                 <div class="col-md-6">
-                    <div class="query-card animate__animated animate__fadeInLeft">
-                        <div class="card-header">
-                            <img src="assets/img/cards/golem.png" alt="Golem" class="card-icon">
-                            <h3>Taxa de Vitória/Derrota</h3>
-                        </div>
-                        <input type="text" class="form-control" id="card1" placeholder="Carta (ex: Golem)">
-                        <input type="date" class="form-control mt-2" id="startDate1">
-                        <input type="date" class="form-control mt-2" id="endDate1">
-                        <button class="btn btn-query mt-3" onclick="runQuery(1)">Executar</button>
+                    <div class="query-card">
+                        <h3>Taxa de Vitória/Derrota</h3>
+                        <input type="text" id="cardX" class="form-control" placeholder="Carta (ex: Fireball)">
+                        <input type="date" id="startDate1" class="form-control mt-2">
+                        <input type="date" id="endDate1" class="form-control mt-2">
+                        <button class="btn btn-primary mt-3" onclick="calculateWinLossPercentage(
+                            document.getElementById('cardX').value,
+                            document.getElementById('startDate1').value,
+                            document.getElementById('endDate1').value
+                        )">Executar</button>
                     </div>
                 </div>
+
                 <!-- Consulta 2 -->
                 <div class="col-md-6">
-                    <div class="query-card animate__animated animate__fadeInRight">
-                        <div class="card-header">
-                            <img src="assets/img/cards/witch.png" alt="Witch" class="card-icon">
-                            <h3>Decks Vitoriosos</h3>
-                        </div>
-                        <input type="number" class="form-control" id="winPercent2" placeholder="% de Vitórias (ex: 60)">
-                        <input type="date" class="form-control mt-2" id="startDate2">
-                        <input type="date" class="form-control mt-2" id="endDate2">
-                        <button class="btn btn-query mt-3" onclick="runQuery(2)">Executar</button>
+                    <div class="query-card">
+                        <h3>Decks Vencedores</h3>
+                        <input type="number" id="winPercentage" class="form-control" placeholder="% de Vitórias (ex: 60)">
+                        <input type="date" id="startDate2" class="form-control mt-2">
+                        <input type="date" id="endDate2" class="form-control mt-2">
+                        <button class="btn btn-primary mt-3" onclick="listWinningDecks(
+                            document.getElementById('winPercentage').value,
+                            document.getElementById('startDate2').value,
+                            document.getElementById('endDate2').value
+                        )">Executar</button>
                     </div>
                 </div>
+
                 <!-- Consulta 3 -->
                 <div class="col-md-6">
-                    <div class="query-card animate__animated animate__fadeInLeft">
-                        <div class="card-header">
-                            <img src="assets/img/cards/hog_rider.png" alt="Hog Rider" class="card-icon">
-                            <h3>Derrotas por Combo</h3>
-                        </div>
-                        <input type="text" class="form-control" id="combo3" placeholder="Combo (ex: Golem, Witch)">
-                        <input type="date" class="form-control mt-2" id="startDate3">
-                        <input type="date" class="form-control mt-2" id="endDate3">
-                        <button class="btn btn-query mt-3" onclick="runQuery(3)">Executar</button>
-                    </div>
-                </div>
-                <!-- Consulta 4 -->
-                <div class="col-md-6">
-                    <div class="query-card animate__animated animate__fadeInRight">
-                        <div class="card-header">
-                            <img src="assets/img/cards/fireball.png" alt="Fireball" class="card-icon">
-                            <h3>Vitórias com Desvantagem</h3>
-                        </div>
-                        <input type="text" class="form-control" id="card4" placeholder="Carta (ex: Fireball)">
-                        <input type="number" class="form-control mt-2" id="trophyDiff4" placeholder="% Diferença de Troféus">
-                        <button class="btn btn-query mt-3" onclick="runQuery(4)">Executar</button>
+                    <div class="query-card">
+                        <h3>Derrotas por Combo</h3>
+                        <input type="text" id="comboCards" class="form-control" placeholder="Combo (ex: Golem, Witch)">
+                        <input type="date" id="startDate3" class="form-control mt-2">
+                        <input type="date" id="endDate3" class="form-control mt-2">
+                        <button class="btn btn-primary mt-3" onclick="calculateComboLosses(
+                            document.getElementById('comboCards').value.split(','),
+                            document.getElementById('startDate3').value,
+                            document.getElementById('endDate3').value
+                        )">Executar</button>
                     </div>
                 </div>
             </div>
@@ -115,10 +108,28 @@
         </div>
     </section>
 
+    <!-- Pesquisa de Clãs -->
+    <section id="search-clans" class="cards-section">
+        <div class="container">
+            <h2 class="section-title">Pesquisar Clãs</h2>
+            <div class="input-group mb-3">
+                <input type="text" id="clanNameInput" class="form-control" placeholder="Digite o nome do clã (ex: Royale)">
+                <button class="btn btn-primary" onclick="searchClan()">Pesquisar</button>
+            </div>
+            <div id="clan-results" class="row g-4">
+                <!-- Resultados da pesquisa de clãs serão exibidos aqui -->
+            </div>
+        </div>
+    </section>
+
     <!-- Montagem de Deck -->
     <section id="deck-builder" class="cards-section">
         <div class="container">
             <h2 class="section-title">Monte seu Deck</h2>
+            <div id="available-cards" class="row g-4">
+                <!-- Cartas disponíveis para seleção serão carregadas aqui -->
+            </div>
+            <h3 class="mt-5">Seu Deck</h3>
             <div id="deck-container" class="row g-4">
                 <!-- Cartas selecionadas para o deck serão exibidas aqui -->
             </div>
@@ -154,7 +165,8 @@
                 <p><strong>Objetivo:</strong> Analisar dados de batalhas do Clash Royale em MongoDB para balanceamento do jogo.</p>
                 <p><strong>Dados:</strong> Jogadores (nickname, troféus) e batalhas (decks, vencedor, torres).</p>
                 <p><strong>Fonte:</strong> API do Clash Royale ou Kaggle.</p>
-                <p><strong>Apresentação:</strong> 14/04/2025 e 15/04/2025.</p>
+                <p><strong>Professor Orientador:</strong> Heuryk Wylk</p>
+                <p><strong>Equipe:</strong> Gabriela Pires, Vinicius Gabriel e Vitor Marins.</p>
             </div>
         </div>
     </section>
