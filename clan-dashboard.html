@@ -8,12 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Supercell-Magic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/clan-interface.css">
+    <link rel="icon" href="assets/images/icon-aba.png" type="image/png">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="container">
-            <h1 class="navbar-brand">Royale Data</h1>
+        <div class="container d-flex align-items-center">
+            <h1 class="navbar-brand d-flex align-items-center">
+                <img src="assets/images/icon-clash-royale.png" alt="Clash Royale Icon" class="header-icon">
+                <span>Royale Data</span>
+            </h1>
             <div class="nav-links">
                 <a href="#query-section" class="nav-link">Consultas</a>
                 <a href="#results" class="nav-link">Resultados</a>
@@ -37,7 +41,7 @@
             <h2 class="section-title">Consultas Analíticas</h2>
             <div class="row g-4">
                 <!-- Consulta 1 -->
-                <div class="col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="query-card">
                         <h3>Taxa de Vitória/Derrota</h3>
                         <input type="text" id="cardX" class="form-control" placeholder="Carta (ex: Fireball)">
@@ -52,7 +56,7 @@
                 </div>
 
                 <!-- Consulta 2 -->
-                <div class="col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="query-card">
                         <h3>Decks Vencedores</h3>
                         <input type="number" id="winPercentage" class="form-control" placeholder="% de Vitórias (ex: 60)">
@@ -67,7 +71,7 @@
                 </div>
 
                 <!-- Consulta 3 -->
-                <div class="col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="query-card">
                         <h3>Derrotas por Combo</h3>
                         <input type="text" id="comboCards" class="form-control" placeholder="Combo (ex: Golem, Witch)">
@@ -163,18 +167,17 @@
             <h2 class="section-title">Sobre o Projeto</h2>
             <div class="about-content">
                 <p><strong>Objetivo:</strong> Analisar dados de batalhas do Clash Royale em MongoDB para balanceamento do jogo.</p>
-                <p><strong>Dados:</strong> Jogadores (nickname, troféus) e batalhas (decks, vencedor, torres).</p>
+                <p><strong>Dados:</strong> Jogadores (nickname, clãs, troféus) e batalhas (cartas, decks, vencedor, torres).</p>
                 <p><strong>Fonte:</strong> API do Clash Royale ou Kaggle.</p>
                 <p><strong>Professor Orientador:</strong> Heuryk Wylk</p>
-                <p><strong>Equipe:</strong> Gabriela Pires, Vinicius Gabriel e Vitor Marins.</p>
+                <p><strong>Equipe:</strong> Gabriela Pires, Thiago Monteiro, Vinicius Gabriel e Vitor Marins.</p>
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>© 2025 Royale Data | MongoDB Project - 2025.1</p>
+            <p>© 2025 Royale Data | MongoDB Academic Project - 2025.1</p>
         </div>
     </footer>
 

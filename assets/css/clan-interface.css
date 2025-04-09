@@ -29,8 +29,13 @@ body {
 .navbar-brand {
     font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
-    color: #38bdf8;
+    color: #38bdf8; /* Cor fixa para o texto */
     text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    transition: none; /* Remove qualquer transição de cor */
+}
+.navbar-brand:hover {
+    color: #38bdf8; /* Mantém a mesma cor ao passar o mouse */
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); /* Mantém o mesmo efeito */
 }
 .nav-links {
     display: flex;
@@ -45,6 +50,14 @@ body {
 .nav-link:hover {
     color: #ffc107;
     text-shadow: 0 0 5px rgba(255, 193, 7, 0.7);
+}
+
+/* Estilo para o ícone no header */
+.header-icon {
+    width: 30px; /* Define a largura da imagem */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+    vertical-align: middle; /* Alinha a imagem ao texto */
 }
 
 /* Hero Section */
