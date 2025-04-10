@@ -1,3 +1,9 @@
+// Ativar a animação da elixir bar quando a página carregar
+document.addEventListener('DOMContentLoaded', function () {
+    const elixirFill = document.querySelector('.elixir-fill');
+    elixirFill.classList.add('active');
+});
+
 function scrollToSection(sectionId) {
     document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
 }
