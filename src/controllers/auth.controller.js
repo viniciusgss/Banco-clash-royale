@@ -1,8 +1,5 @@
 const jwt = require("jsonwebtoken");
-const {
-  createUsuario,
-  compareSenha,
-} = require("../models/usuarios.models");
+const { createUsuario, compareSenha } = require("../models/usuarios.models");
 const config = require("../config/jwt");
 
 exports.registrar = async (req, res) => {
@@ -12,7 +9,7 @@ exports.registrar = async (req, res) => {
       nome,
       email,
       senha,
-      avatar
+      avatar,
     });
     if (!usuario) {
       return res.status(400).json({ message: "Erro ao registrar usuário." });

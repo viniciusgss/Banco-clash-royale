@@ -11,11 +11,8 @@ dotenv.config();
 
 const app = express();
 
-const db = connectDB();
-if (!db) {
-  console.error("Failed to connect to the database");
-  process.exit(1);
-}
+connectDB();
+
 const corsConfig = {
   origin: "*",
   methods: "GET,POST,PUT,DELETE",

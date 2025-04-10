@@ -1,7 +1,7 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 module.exports = {
-  secret: process.env.JWT_SECRET || 'suaChaveSecretaSuperSegura12345',
+  secret: process.env.JWT_SECRET || "suaChaveSecretaSuperSegura12345",
 };

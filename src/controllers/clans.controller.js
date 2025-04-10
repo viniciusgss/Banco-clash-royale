@@ -1,2 +1,1 @@
-const Clans = require('../models/clans.model');
-
+const Clans = require("../models/clans.model");
