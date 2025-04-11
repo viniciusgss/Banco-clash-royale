@@ -11,7 +11,7 @@ const clanSchema = new mongoose.Schema({
   requiredTrophies: { type: Number, default: 0 },
   location: { type: String, default: "" },
   description: { type: String, default: "" },
-  type: { type: String, default: null },
+  type: { type: String, default: "" },
 });
 
 module.exports = mongoose.model("Clan", clanSchema);
