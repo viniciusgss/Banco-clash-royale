@@ -1,5 +1,5 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   consulta1,
   consulta2,
   consulta3,
@@ -8,7 +8,7 @@ import {
   consulta6,
   consulta7,
   consulta8,
-} from "../controllers/consultas.controller.js";
+} = require("../controllers/consultas.controller.js");
 
 /**
  * Router instance for handling API routes.

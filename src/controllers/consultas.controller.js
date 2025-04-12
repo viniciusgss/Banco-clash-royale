@@ -88,7 +88,7 @@ exports.consulta1 = async (req, res) => {
         }
       }
     ]);
-    if (!consulta) {
+    if (consulta.length === 0) {
       return res.status(404).json({ message: "Erro na Consulta" });
     }
     res.status(200).json(consulta);
@@ -174,7 +174,7 @@ exports.consulta2 = async (req, res) => {
     }
   }
     ]);
-    if (!consulta) {
+    if (consulta.length === 0) {
       return res.status(404).json({ message: "Erro na Consulta" });
     }
     res.status(200).json(consulta);
@@ -238,7 +238,7 @@ exports.consulta3 = async (req, res) => {
         }
       }
     ]);
-    if (!consulta) {
+    if (consulta.length === 0) {
       return res.status(404).json({ message: "Erro na Consulta" });
     }
     res.status(200).json(consulta);
@@ -251,22 +251,26 @@ exports.consulta3 = async (req, res) => {
 exports.consulta4 = async (req, res) => {
   try {
     const { carta, porcentagemTrofeusamenos } = req.query;
+    if (!carta || !porcentagemTrofeusamenos) {
+      return res.status(400).json({ message: "Carta e porcentagem são obrigatórias" });
+    }
+    // Converte para número e calcula o multiplicador
+    const percentual = parseFloat(porcentagemTrofeusamenos) / 100;
+    const multiplicador = 1 - percentual;
+
     const consulta = await Battles.aggregate([
       {
-        // Filtra por duração < 2 minutos e vitórias
         $match: {
           $expr: {
-            // Duração < 120 segundos (2 minutos)
             $lt: [
               { $subtract: ["$battleTimeEnd", "$battleTimeBegin"] },
-              120000 // 120 segundos em milissegundos
+              120000
             ]
           },
-          playerTrophyChange: { $gt: 0 } // Jogador venceu
+          playerTrophyChange: { $gt: 0 }
         }
       },
       {
-        // Faz o lookup para trazer os dados do playerDeck
         $lookup: {
           from: "battledecks",
           localField: "playerDeck",
@@ -274,18 +278,13 @@ exports.consulta4 = async (req, res) => {
           as: "playerDeckData"
         }
       },
+      { $unwind: "$playerDeckData" },
       {
-        // Desconstrói o array playerDeckData
-        $unwind: "$playerDeckData"
-      },
-      {
-        // Filtra partidas com a carta X no deck do vencedor
         $match: {
-          "playerDeckData.cards": carta // Carta específica
+          "playerDeckData.cards": carta
         }
       },
       {
-        // Faz o lookup para trazer os troféus do jogador (vencedor)
         $lookup: {
           from: "players",
           localField: "player",
@@ -293,12 +292,8 @@ exports.consulta4 = async (req, res) => {
           as: "playerData"
         }
       },
+      { $unwind: "$playerData" },
       {
-        // Desconstrói o array playerData
-        $unwind: "$playerData"
-      },
-      {
-        // Faz o lookup para trazer os troféus do oponente (perdedor)
         $lookup: {
           from: "players",
           localField: "opponent",
@@ -306,44 +301,111 @@ exports.consulta4 = async (req, res) => {
           as: "opponentData"
         }
       },
+      { $unwind: "$opponentData" },
       {
-        // Desconstrói o array opponentData
-        $unwind: "$opponentData"
-      },
-      {
-        // Filtra onde o vencedor tem Z% menos troféus e o perdedor derrubou >= 2 torres
         $match: {
           $expr: {
             $and: [
-              // Vencedor tem no máximo (1 - Z/100) * troféus do perdedor
-              { $lte: ["$playerData.trophies", { $multiply: ["$opponentData.trophies", 0.8] }] }, // Z = 20%
-              // Perdedor derrubou pelo menos 2 torres
+              {
+                $lte: [
+                  "$playerData.trophies",
+                  { $multiply: ["$opponentData.trophies", multiplicador] }
+                ]
+              },
               { $gte: ["$opponentTowersDestroyed", 2] }
             ]
           }
         }
       },
       {
-        // Conta o total de vitórias
         $group: {
           _id: null,
           totalVitorias: { $sum: 1 }
         }
       },
       {
-        // Formata a saída
         $project: {
           _id: 0,
           totalVitorias: 1
         }
       }
     ]);
-    if (!consulta) {
-      return res.status(404).json({ message: "Erro na Consulta" });
+
+    if (consulta.length === 0) {
+      return res.status(404).json({ message: "Nenhuma vitória encontrada com esses critérios" });
     }
-    res.status(200).json(consulta);
+
+    res.status(200).json(consulta[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erro ao realizar consulta" });
   }
-}
+};
+
+const getCombinations = (arr, k) => {
+  const results = [];
+  const backtrack = (start, path) => {
+    if (path.length === k) {
+      results.push([...path]);
+      return;
+    }
+    for (let i = start; i < arr.length; i++) {
+      path.push(arr[i]);
+      backtrack(i + 1, path);
+      path.pop();
+    }
+  };
+  backtrack(0, []);
+  return results;
+};
+
+exports.consulta5 = async (req, res) => {
+  try {
+    const { tamanhoCombo, percentualMinimo, inicio, fim } = req.query;
+
+    const comboSize = parseInt(tamanhoCombo);
+    const minPercent = parseFloat(percentualMinimo);
+    const inicioDate = new Date(inicio);
+    const fimDate = new Date(fim);
+
+    // Busca batalhas vencidas no intervalo
+    const batalhas = await Battles.find({
+      battleTimeBegin: { $gte: inicioDate, $lte: fimDate },
+      playerTrophyChange: { $gt: 0 } // vitórias
+    }).populate({
+      path: "playerDeck",
+      populate: { path: "cards" }
+    });
+
+    const totalVitorias = batalhas.length;
+    const contadorCombos = {};
+
+    for (const batalha of batalhas) {
+      const cartas = batalha.playerDeck.cards.map(card => card.name).sort();
+      const combinacoes = getCombinations(cartas, comboSize);
+      combinacoes.forEach(combo => {
+        const key = combo.join(", ");
+        contadorCombos[key] = (contadorCombos[key] || 0) + 1;
+      });
+    }
+
+    const resultado = Object.entries(contadorCombos)
+      .map(([combo, count]) => ({
+        combo,
+        vitorias: count,
+        percentual: ((count / totalVitorias) * 100).toFixed(2)
+      }))
+      .filter(item => item.percentual >= minPercent)
+      .sort((a, b) => b.vitorias - a.vitorias);
+
+    res.status(200).json({
+      totalVitorias,
+      combosRelevantes: resultado
+    });
+
+  } catch (error) {
+    console.error("Erro na consulta6:", error);
+    res.status(500).json({ message: "Erro ao executar consulta6" });
+  }
+};
+

@@ -1,4 +1,4 @@
-const consultasRoutes = require("./usuario.routes");
+const consultasRoutes = require("./consultas.routes");
 
 /**
  * Configura as rotas do aplicativo.
