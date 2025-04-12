@@ -7,7 +7,7 @@ import {
   consulta5,
   consulta6,
   consulta7,
-  consulta8
+  consulta8,
 } from "../controllers/consultas.controller.js";
 
 /**
@@ -136,4 +136,4 @@ router.get("/7", consulta7);
  */
 router.get("/8", consulta8);
 
-exports = router;
+module.exports = router;
