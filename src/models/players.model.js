@@ -9,10 +9,13 @@ const playerSchema = new mongoose.Schema(
     clan: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Clan",
-      required: false,
     },
     cards: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Card", required: true },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Card",
+        required: true,
+      },
     ],
     battleDecks: [
       {

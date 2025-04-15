@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const BattleSchema = new mongoose.Schema(
+const battleSchema = new mongoose.Schema(
   {
     battleTimeBegin: { type: Date, required: true },
     battleTimeEnd: { type: Date, required: true },
@@ -33,4 +33,4 @@ const BattleSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Battle", BattleSchema);
+module.exports = mongoose.model("Battle", battleSchema);

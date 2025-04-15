@@ -18,10 +18,7 @@ exports.consulta1 = async (req, res) => {
     const consulta = await Battles.aggregate([
       {
         $match: {
-          battleTime: {
-            $gte: new Date(DataInicio),
-            $lte: new Date(DataFim),
-          },
+          battleTime: { $gte: new Date(DataInicio), $lte: new Date(DataFim) },
         },
       },
       {
@@ -33,11 +30,7 @@ exports.consulta1 = async (req, res) => {
         },
       },
       { $unwind: "$playerDeckData" },
-      {
-        $match: {
-          "playerDeckData.cards": carta._id,
-        },
-      },
+      { $match: { "playerDeckData.cards": carta._id } },
       {
         $group: {
           _id: null,
@@ -94,10 +87,7 @@ exports.consulta2 = async (req, res) => {
     const consulta = await Battles.aggregate([
       {
         $match: {
-          battleTime: {
-            $gte: new Date(DataInicio),
-            $lte: new Date(DataFim),
-          },
+          battleTime: { $gte: new Date(DataInicio), $lte: new Date(DataFim) },
         },
       },
       {
@@ -131,11 +121,7 @@ exports.consulta2 = async (req, res) => {
           },
         },
       },
-      {
-        $match: {
-          porcentagemVitorias: { $gt: porcentagem },
-        },
-      },
+      { $match: { porcentagemVitorias: { $gt: porcentagem } } },
       {
         $project: {
           deck: "$_id",
@@ -169,10 +155,7 @@ exports.consulta3 = async (req, res) => {
     const consulta = await Battles.aggregate([
       {
         $match: {
-          battleTime: {
-            $gte: new Date(DataInicio),
-            $lte: new Date(DataFim),
-          },
+          battleTime: { $gte: new Date(DataInicio), $lte: new Date(DataFim) },
         },
       },
       {
@@ -184,11 +167,7 @@ exports.consulta3 = async (req, res) => {
         },
       },
       { $unwind: "$playerDeckData" },
-      {
-        $match: {
-          "playerDeckData.cards": { $all: cartasArray },
-        },
-      },
+      { $match: { "playerDeckData.cards": { $all: cartasArray } } },
       {
         $group: {
           _id: null,
@@ -197,12 +176,7 @@ exports.consulta3 = async (req, res) => {
           },
         },
       },
-      {
-        $project: {
-          _id: 0,
-          totalDerrotas: 1,
-        },
-      },
+      { $project: { _id: 0, totalDerrotas: 1 } },
     ]);
 
     if (consulta.length === 0)
@@ -249,11 +223,7 @@ exports.consulta4 = async (req, res) => {
         },
       },
       { $unwind: "$playerDeckData" },
-      {
-        $match: {
-          "playerDeckData.cards": parseInt(carta),
-        },
-      },
+      { $match: { "playerDeckData.cards": parseInt(carta) } },
       {
         $lookup: {
           from: "players",
@@ -293,12 +263,7 @@ exports.consulta4 = async (req, res) => {
           totalVitorias: { $sum: 1 },
         },
       },
-      {
-        $project: {
-          _id: 0,
-          totalVitorias: 1,
-        },
-      },
+      { $project: { _id: 0, totalVitorias: 1 } },
     ]);
 
     if (consulta.length === 0)
@@ -322,10 +287,7 @@ exports.consulta5 = async (req, res) => {
     const pipeline = [
       {
         $match: {
-          battleTimeBegin: {
-            $gte: new Date(inicio),
-            $lte: new Date(fim),
-          },
+          battleTimeBegin: { $gte: new Date(inicio), $lte: new Date(fim) },
           playerTrophyChange: { $gt: 0 },
         },
       },
@@ -349,11 +311,7 @@ exports.consulta5 = async (req, res) => {
       {
         $project: {
           combo: {
-            $map: {
-              input: "$deckCards",
-              as: "card",
-              in: "$$card.name",
-            },
+            $map: { input: "$deckCards", as: "card", in: "$$card.name" },
           },
         },
       },
@@ -384,63 +342,37 @@ exports.consulta5 = async (req, res) => {
         },
       },
       { $unwind: "$combinations" },
-      {
-        $group: {
-          _id: "$combinations",
-          vitorias: { $sum: 1 },
-        },
-      },
-      {
-        $setWindowFields: {
-          output: {
-            totalVitorias: {
-              $sum: "$vitorias",
-              window: {
-                documents: ["unbounded", "unbounded"],
-              },
-            },
-          },
-        },
-      },
-      {
-        $addFields: {
-          percentual: {
-            $multiply: [{ $divide: ["$vitorias", "$totalVitorias"] }, 100],
-          },
-        },
-      },
-      {
-        $match: {
-          percentual: { $gte: minPercent },
-        },
-      },
+      { $group: { _id: "$combinations", vitorias: { $sum: 1 } } },
       {
         $project: {
-          _id: 0,
-          combo: "$_id",
+          _id: 1,
           vitorias: 1,
-          percentual: { $round: ["$percentual", 2] },
+          porcentagem: {
+            $multiply: [
+              { $divide: ["$vitorias", { $size: "$combinations" }] },
+              100,
+            ],
+          },
         },
       },
-      { $sort: { vitorias: -1 } },
+      { $match: { porcentagem: { $gte: minPercent } } },
+      { $sort: { porcentagem: -1 } },
     ];
 
     const resultado = await Battles.aggregate(pipeline);
-
-    res.status(200).json({
-      combosRelevantes: resultado,
-    });
+    res.json(resultado);
   } catch (error) {
-    console.error("Erro na consulta 5:", error);
-    res.status(500).json({ message: "Erro ao executar consulta 5." });
+    console.error(error);
+    res.status(500).json({ message: "Erro ao realizar consulta 5." });
   }
 };
 
 // Consulta 6
+// Consulta 6 - Melhorada
 exports.consulta6 = async (req, res) => {
   try {
     const resultado = await Battles.aggregate([
-      { $unwind: "$deck" }, // cada carta em seu próprio doc
+      { $unwind: "$deck" }, // Decompor o deck em múltiplos documentos
       {
         $group: {
           _id: { carta: "$deck", deckName: "$deckName" },
@@ -463,8 +395,8 @@ exports.consulta6 = async (req, res) => {
           carta: "$_id",
           decks: {
             $slice: [
-              { $sortArray: { input: "$decks", sortBy: { aparicoes: -1 } } },
-              5,
+              { $sort: { input: "$decks", sortBy: { aparicoes: -1 } } }, // Ordena os decks pelo número de aparições
+              5, // Pega apenas os 5 decks mais populares
             ],
           },
           _id: 0,
@@ -479,6 +411,7 @@ exports.consulta6 = async (req, res) => {
 };
 
 // Consulta 7
+// Consulta 7 - Melhorada
 exports.consulta7 = async (req, res) => {
   try {
     const resultado = await Battles.aggregate([
@@ -491,7 +424,13 @@ exports.consulta7 = async (req, res) => {
       {
         $project: {
           _id: 0,
-          mediaDuracao: { $round: ["$mediaDuracao", 2] },
+          mediaDuracao: {
+            $cond: [
+              { $eq: ["$mediaDuracao", null] }, // Verifica se a média é nula
+              0,
+              { $round: ["$mediaDuracao", 2] }, // Arredonda para 2 casas decimais
+            ],
+          },
         },
       },
     ]);
@@ -502,14 +441,11 @@ exports.consulta7 = async (req, res) => {
   }
 };
 
-// Consulta 8
 exports.consulta8 = async (req, res) => {
   try {
     const resultado = await Battles.aggregate([
-      {
-        $match: { playerTrophyChange: { $gt: 0 } }, // só vitórias
-      },
-      { $unwind: "$deck" },
+      { $match: { playerTrophyChange: { $gt: 0 } } }, // Filtra apenas as vitórias
+      { $unwind: "$deck" }, // Decompõe o deck em múltiplos documentos
       {
         $group: {
           _id: { carta: "$deck", jogador: "$playerTag" },
@@ -524,7 +460,7 @@ exports.consulta8 = async (req, res) => {
           as: "player",
         },
       },
-      { $unwind: "$player" },
+      { $unwind: "$player" }, // Garante que a referência do jogador esteja disponível
       {
         $group: {
           _id: "$_id.carta",
@@ -542,14 +478,20 @@ exports.consulta8 = async (req, res) => {
           carta: "$_id",
           jogadores: {
             $slice: [
-              { $sortArray: { input: "$jogadores", sortBy: { vitorias: -1 } } },
-              3,
+              { $sort: { input: "$jogadores", sortBy: { vitorias: -1 } } }, // Ordena os jogadores pelas vitórias
+              3, // Pega os 3 jogadores com mais vitórias
             ],
           },
           _id: 0,
         },
       },
     ]);
+
+    if (resultado.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Nenhum jogador com vitórias encontrado." });
+    }
 
     res.status(200).json({ melhoresJogadoresPorCarta: resultado });
   } catch (error) {

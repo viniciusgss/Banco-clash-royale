@@ -7,7 +7,7 @@ const cardSchema = new mongoose.Schema(
     maxLevel: { type: Number, required: true },
     maxEvolutionLevel: { type: Number, required: true },
     elixirCost: { type: Number, required: true },
-    iconUrls: { type: Object, required: false },
+    iconUrls: { type: Object },
     rarity: { type: String, required: true },
   },
   { timestamps: true },
