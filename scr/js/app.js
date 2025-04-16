@@ -1,5 +1,9 @@
 // Base URL da API (ajuste conforme o back-end)
+<<<<<<< HEAD
 const API_URL = "https://banco-clash-royale.onrender.com/api/consultas";
+=======
+const API_URL = "https://banco-clash-royale.onrender.com/api/battles";
+>>>>>>> 9e1c0cbbc18470e013053209d35d028ea0bd3bb4
 
 // Função para exibir resultados
 function displayResult(elementId, data) {
@@ -98,6 +102,7 @@ async function runConsulta5() {
     displayResult("resultado-consulta5", { error: error.response?.data?.message || "Erro ao executar consulta." });
   }
 }
+<<<<<<< HEAD
 // Consulta 6: Decks populares por carta
 async function runConsulta6() {
   try {
@@ -147,3 +152,5 @@ async function runConsulta8() {
     displayResult("resultado-consulta8", { error: error.response?.data?.message || "Erro ao executar consulta." });
   }
 }
+=======
+>>>>>>> 9e1c0cbbc18470e013053209d35d028ea0bd3bb4
