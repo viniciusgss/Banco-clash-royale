@@ -1,9 +1,6 @@
 // Base URL da API (ajuste conforme o back-end)
-<<<<<<< HEAD
+
 const API_URL = "https://banco-clash-royale.onrender.com/api/consultas";
-=======
-const API_URL = "https://banco-clash-royale.onrender.com/api/battles";
->>>>>>> 9e1c0cbbc18470e013053209d35d028ea0bd3bb4
 
 // Função para exibir resultados
 function displayResult(elementId, data) {
@@ -26,7 +23,54 @@ async function runConsulta1() {
         dataFim: "2025-04-22",
       },
     });
+
+    // Exibir os dados no elemento de resultado (opcional)
     displayResult("resultado-consulta1", response.data);
+
+    // Verificar os dados retornados pela API
+    console.log("Dados retornados pela API (Consulta 1):", response.data);
+
+    // Processar os dados retornados pela API
+    const data = response.data[0]; // Acessar o primeiro elemento do array
+    if (!data) {
+      console.error("Nenhum dado encontrado para a consulta 1.");
+      return;
+    }
+
+    const totalPartidas = data.totalPartidas || 0; // Total de partidas
+    const porcentagemVitorias = data.porcentagemVitorias || 0; // Porcentagem de vitórias
+    const porcentagemDerrotas = data.porcentagemDerrotas || 0; // Porcentagem de derrotas
+
+    const labels = ["Vitórias (%)", "Derrotas (%)"];
+    const values = [porcentagemVitorias, porcentagemDerrotas];
+
+    // Renderizar o gráfico no canvas
+    const ctx = document.getElementById('chart-consulta1').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie', // Tipo de gráfico (pizza)
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Distribuição de Vitórias e Derrotas',
+          data: values,
+          backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+          borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          tooltip: {
+            enabled: true
+          }
+        }
+      }
+    });
   } catch (error) {
     console.error("Erro na Consulta 1:", error);
     displayResult("resultado-consulta1", { error: error.response?.data?.message || "Erro ao executar consulta." });
@@ -43,7 +87,66 @@ async function runConsulta2() {
         dataFim: "2025-04-22",
       },
     });
+
+    // Exibir os dados no elemento de resultado (opcional)
     displayResult("resultado-consulta2", response.data);
+
+    // Verificar os dados retornados pela API
+    console.log("Dados retornados pela API (Consulta 2):", response.data);
+
+    // Processar os dados retornados pela API
+    const data = response.data;
+    if (!data || data.length === 0) {
+      console.error("Nenhum dado encontrado para a consulta 2.");
+      return;
+    }
+
+    // Extrair os decks e as porcentagens de vitória
+    const labels = data.map((item, index) => `Deck ${index + 1}`); // Exemplo: Deck 1, Deck 2, etc.
+    const values = data.map(item => item.porcentagemVitorias); // Porcentagem de vitórias
+
+    // Renderizar o gráfico no canvas
+    const ctx = document.getElementById('chart-consulta2').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar', // Tipo de gráfico (barras)
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Porcentagem de Vitórias (%)',
+          data: values,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Porcentagem de Vitórias (%)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Decks'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          tooltip: {
+            enabled: true
+          }
+        }
+      }
+    });
   } catch (error) {
     console.error("Erro na Consulta 2:", error);
     displayResult("resultado-consulta2", { error: error.response?.data?.message || "Erro ao executar consulta." });
@@ -102,7 +205,7 @@ async function runConsulta5() {
     displayResult("resultado-consulta5", { error: error.response?.data?.message || "Erro ao executar consulta." });
   }
 }
-<<<<<<< HEAD
+
 // Consulta 6: Decks populares por carta
 async function runConsulta6() {
   try {
@@ -152,5 +255,5 @@ async function runConsulta8() {
     displayResult("resultado-consulta8", { error: error.response?.data?.message || "Erro ao executar consulta." });
   }
 }
-=======
->>>>>>> 9e1c0cbbc18470e013053209d35d028ea0bd3bb4
+
+
