@@ -1,5 +1,5 @@
 // Base URL da API (ajuste conforme o back-end)
-const API_URL = "http://localhost:5000/api/battles";
+const API_URL = "https://banco-clash-royale.onrender.com/api/battles";
 
 // Função para exibir resultados
 function displayResult(elementId, data) {
