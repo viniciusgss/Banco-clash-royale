@@ -48,6 +48,17 @@ npm run start
 yarn start
 ```
 
+### Installation - Frontend
+
+Clone the repository:
+
+```bash
+git clone https://github.com/viniciusgss/Banco-clash-royale.git
+cd Banco-clash-royale
+```
+
+Open with Live Server
+
 ---
 
 ## 📘 API Reference
@@ -2372,4 +2383,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 🙋 Questions?
 
-Open an [issue](https://github.com/your-username/your-repo/issues) or contact me via [email](mailto:youremail@example.com).
+Open an [issue](https://github.com/viniciusgss/Banco-clash-royale/issues) or contact me via [email](mailto:youremail@example.com).
