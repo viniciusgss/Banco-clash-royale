@@ -4,7 +4,7 @@ A website to display analytics made with Clash Royale API data.
 
 ## 📸 Demo
 
-(optional — insert images, GIFs, or demo links here)
+![Print do Projeto](printclash.PNG)
 
 ---
 
