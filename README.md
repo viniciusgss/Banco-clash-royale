@@ -2383,4 +2383,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 🙋 Questions?
 
-Open an [issue](https://github.com/viniciusgss/Banco-clash-royale/issues) or contact me via [email](mailto:youremail@example.com).
+Open an [issue](https://github.com/viniciusgss/Banco-clash-royale/issues) or contact me via [email](mailto:Viniciusgss22@gmail.com).
