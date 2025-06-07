@@ -8,6 +8,15 @@ A website to display analytics made with Clash Royale API data.
 
 ---
 
+## 📜 Description
+The page of the project was built with pure HTML, CSS and JavaScript. And the graphs were made with the chart.js library.
+
+Our Node.js API was developed with express, cors, helmet and morgan.
+
+The API make queries to a MongoDB database. Each query have it own pipeline, that filters some clash royale battle info to return to the user with useful graphs to better understanding.
+
+All the Clash Royale battle data was taken from the [Clash Royale API](https://developer.clashroyale.com/#/)
+
 ## 🛠️ Installation Guide
 
 ### Prerequisites
